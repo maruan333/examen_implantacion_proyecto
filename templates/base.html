@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Gestión Académica</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Gestión Académica</div>
+    <nav>
+      <a href="/estudiantes">Estudiantes</a>
+      <a href="/asignaturas">Asignaturas</a>
+      <a href="/matriculas">Matrículas</a>
+    </nav>
+    <div class="user">
+      {% if user %}
+        <span class="user-name">{{ user.username }}</span>
+        {% if user.es_admin %}<span class="chip chip-admin">ADMIN</span>{% endif %}
+        <a class="btn btn-ghost" href="/logout">Cerrar sesión</a>
+      {% else %}
+        <a class="btn btn-ghost" href="/login">Entrar</a>
+      {% endif %}
+    </div>
+  </header>
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="footer">Examen Implantación - Maruan style</footer>
+</body>
+</html>

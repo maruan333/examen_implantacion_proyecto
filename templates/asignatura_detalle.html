@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>{{ asignatura.nombre }} ({{ asignatura.codigo }})</h2>
+        <div>
+          {% if user.es_admin %}
+            <a class="btn btn-ghost" href="/asignaturas/{{ asignatura.id }}/editar">Editar</a>
+          {% endif %}
+          <a class="btn btn-ghost" href="/asignaturas">Volver</a>
+        </div>
+      </div>
+      <div class="split">
+        <div class="box">
+          <p><strong>Créditos:</strong> {{ asignatura.creditos }}</p>
+          <p><strong>Departamento:</strong> {{ asignatura.departamento }}</p>
+          <p><strong>Cuatrimestre:</strong> {{ asignatura.cuatrimestre }}</p>
+        </div>
+        <div class="box">
+          <h3>Estudiantes matriculados</h3>
+          <ul class="simple-list">
+            {% for e in estudiantes %}
+              <li class="simple-item">{{ e.nombre_completo }} ({{ e.dni }})</li>
+            {% else %}
+              <li>No hay estudiantes matriculados</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

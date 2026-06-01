@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+  <section class="card">
+    <h2>{% if asignatura %}Editar Asignatura{% else %}Nueva Asignatura{% endif %}</h2>
+    <form method="post" action="{% if asignatura %}/asignaturas/{{ asignatura.id }}/editar{% else %}/asignaturas/nueva{% endif %}">
+      <label>Nombre</label>
+      <input name="nombre" value="{{ asignatura.nombre if asignatura else '' }}" required>
+      <label>Código</label>
+      <input name="codigo" value="{{ asignatura.codigo if asignatura else '' }}" required>
+      <label>Créditos</label>
+      <input type="number" name="creditos" value="{{ asignatura.creditos if asignatura else 6 }}" required>
+      <label>Departamento</label>
+      <input name="departamento" value="{{ asignatura.departamento if asignatura else '' }}">
+      <label>Cuatrimestre</label>
+      <input name="cuatrimestre" value="{{ asignatura.cuatrimestre if asignatura else '' }}">
+      <button class="btn primary" type="submit">Guardar</button>
+    </form>
+  </section>
+{% endblock %}

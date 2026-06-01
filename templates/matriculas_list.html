@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Matrículas</h2>
+        {% if user.es_admin %}
+          <div class="small muted">Crear o eliminar matrículas</div>
+        {% endif %}
+      </div>
+      {% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+      {% if success %}<div class="alert ok">{{ success }}</div>{% endif %}
+
+      <div class="split">
+        <div class="box">
+          <h3>Lista de matrículas</h3>
+          <ul class="simple-list">
+            {% for m in matriculas %}
+              <li class="simple-item with-action">
+                <div>
+                  <strong>{{ m.estudiante_nombre }}</strong> — {{ m.asignatura_nombre }}
+                  <div class="small muted">Año: {{ m.anio_academico }} — Fecha: {{ m.fecha_matricula }}</div>
+                </div>
+                {% if user.es_admin %}
+                  <div class="actions">
+                    <form method="post" action="/matriculas/{{ m.estudiante_id }}/{{ m.asignatura_id }}/borrar" onsubmit="return confirm('Quitar matrícula?');">
+                      <button class="btn btn-danger" type="submit">Quitar</button>
+                    </form>
+                  </div>
+                {% endif %}
+              </li>
+            {% else %}
+              <li>No hay matrículas</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="box">
+          <h3>Asignar nueva matrícula</h3>
+          {% if user.es_admin %}
+            <form method="post" action="/matriculas/nueva" class="stack">
+              <label>Estudiante</label>
+              <select name="estudiante_id" required>
+                {% for e in estudiantes %}
+                  <option value="{{ e.id }}">{{ e.nombre_completo }} ({{ e.dni }})</option>
+                {% endfor %}
+              </select>
+              <label>Asignatura</label>
+              <select name="asignatura_id" required>
+                {% for a in asignaturas %}
+                  <option value="{{ a.id }}">{{ a.nombre }} ({{ a.codigo }})</option>
+                {% endfor %}
+              </select>
+              <label>Año académico</label>
+              <input name="anio_academico" placeholder="2025-2026">
+              <button class="btn btn-primary" type="submit">Crear matrícula</button>
+            </form>
+          {% else %}
+            <p class="muted">Solo administradores pueden crear matrículas.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

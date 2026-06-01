@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>{{ estudiante.nombre_completo }}</h2>
+        <div>
+          {% if user.es_admin %}
+            <a class="btn btn-ghost" href="/estudiantes/{{ estudiante.id }}/editar">Editar</a>
+          {% endif %}
+          <a class="btn btn-ghost" href="/estudiantes">Volver</a>
+        </div>
+      </div>
+      <div class="split">
+        <div class="box">
+          <p><strong>DNI:</strong> {{ estudiante.dni }}</p>
+          <p><strong>Email:</strong> {{ estudiante.email }}</p>
+          <p><strong>Titulación:</strong> {{ estudiante.titulacion }}</p>
+        </div>
+        <div class="box">
+          <h3>Asignaturas matriculadas</h3>
+          <ul class="simple-list">
+            {% for a in asignaturas %}
+              <li class="simple-item">
+                <div>{{ a.nombre }} ({{ a.codigo }})</div>
+                {% if user.es_admin %}
+                  <form method="post" action="/estudiantes/{{ estudiante.id }}/quitar" style="display:inline">
+                    <input type="hidden" name="asignatura_id" value="{{ a.id }}">
+                    <button class="btn btn-danger" type="submit">Quitar</button>
+                  </form>
+                {% endif %}
+              </li>
+            {% else %}
+              <li>No hay asignaturas</li>
+            {% endfor %}
+          </ul>
+          {% if user.es_admin %}
+            <h4>Asignar nueva</h4>
+            <form method="post" action="/estudiantes/{{ estudiante.id }}/asignar" class="inline-form">
+              <select name="asignatura_id">
+                {% for d in disponibles %}
+                  <option value="{{ d.id }}">{{ d.nombre }} ({{ d.codigo }})</option>
+                {% endfor %}
+              </select>
+              <input name="anio_academico" placeholder="2025-2026">
+              <button class="btn btn-primary" type="submit">Asignar</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="card">
+    <h3>Asignaturas matriculadas</h3>
+    <ul>
+      {% for a in asignaturas %}
+        <li>{{ a.nombre }} ({{ a.codigo }})
+          {% if user.es_admin %}
+            <form method="post" action="/estudiantes/{{ estudiante.id }}/quitar" style="display:inline">
+              <input type="hidden" name="asignatura_id" value="{{ a.id }}">
+              <button class="btn danger" type="submit">Quitar</button>
+            </form>
+          {% endif %}
+        </li>
+      {% else %}
+        <li>No hay asignaturas</li>
+      {% endfor %}
+    </ul>
+    {% if user.es_admin %}
+      <h4>Asignar nueva</h4>
+      <form method="post" action="/estudiantes/{{ estudiante.id }}/asignar">
+        <select name="asignatura_id">
+          {% for d in disponibles %}
+            <option value="{{ d.id }}">{{ d.nombre }} ({{ d.codigo }})</option>
+          {% endfor %}
+        </select>
+        <input name="anio_academico" placeholder="2025-2026">
+        <button class="btn" type="submit">Asignar</button>
+      </form>
+    {% endif %}
+  </section>
+{% endblock %}

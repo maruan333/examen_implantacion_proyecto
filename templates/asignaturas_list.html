@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Asignaturas</h2>
+        {% if user.es_admin %}<a class="btn btn-primary" href="/asignaturas/nueva">+ Nueva asignatura</a>{% endif %}
+      </div>
+      {% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+      {% if success %}<div class="alert ok">{{ success }}</div>{% endif %}
+      <div class="cards">
+        {% for a in asignaturas %}
+          <div class="simple-item with-action">
+            <div>
+              <h3>{{ a.nombre }}</h3>
+              <div class="small muted">{{ a.codigo }} — {{ a.creditos }} ECTS</div>
+            </div>
+            <div class="actions">
+              <a class="btn btn-ghost" href="/asignaturas/{{ a.id }}">Ver</a>
+              {% if user.es_admin %}
+                <a class="btn btn-ghost" href="/asignaturas/{{ a.id }}/editar">Editar</a>
+                <form method="post" action="/asignaturas/{{ a.id }}/borrar" onsubmit="return confirm('Borrar asignatura?');" style="display:inline">
+                  <button class="btn btn-danger" type="submit">Borrar</button>
+                </form>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

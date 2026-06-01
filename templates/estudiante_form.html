@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+  <section class="card">
+    <h2>{% if estudiante %}Editar Estudiante{% else %}Nuevo Estudiante{% endif %}</h2>
+    <form method="post" action="{% if estudiante %}/estudiantes/{{ estudiante.id }}/editar{% else %}/estudiantes/nuevo{% endif %}">
+      <label>Nombre completo</label>
+      <input name="nombre_completo" value="{{ estudiante.nombre_completo if estudiante else '' }}" required>
+      <label>DNI</label>
+      <input name="dni" value="{{ estudiante.dni if estudiante else '' }}" required>
+      <label>Email</label>
+      <input name="email" value="{{ estudiante.email if estudiante else '' }}" required>
+      <label>Fecha de nacimiento</label>
+      <input type="date" name="fecha_nacimiento" value="{{ estudiante.fecha_nacimiento if estudiante else '' }}">
+      <label>Titulación</label>
+      <input name="titulacion" value="{{ estudiante.titulacion if estudiante else '' }}">
+      <button class="btn primary" type="submit">Guardar</button>
+    </form>
+  </section>
+{% endblock %}

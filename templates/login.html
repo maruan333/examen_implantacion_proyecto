@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="panel-head">
+        <div>
+          <p class="tag small muted">Acceso</p>
+          <h2>Iniciar sesión</h2>
+        </div>
+      </div>
+      {% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+      <form method="post" action="/login" class="stack">
+        <label>Usuario</label>
+        <input type="text" name="username" required>
+        <label>Contraseña</label>
+        <input type="password" name="password" required>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <a class="btn btn-ghost" href="/register">Registrarse</a>
+          <button class="btn btn-primary" type="submit">Entrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

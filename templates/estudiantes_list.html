@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Estudiantes</h2>
+        {% if user.es_admin %}<a class="btn btn-primary" href="/estudiantes/nuevo">+ Nuevo estudiante</a>{% endif %}
+      </div>
+      {% if error %}<div class="alert error">{{ error }}</div>{% endif %}
+      {% if success %}<div class="alert ok">{{ success }}</div>{% endif %}
+      <div class="cards">
+        {% for e in estudiantes %}
+          <div class="simple-item with-action">
+            <div>
+              <h3>{{ e.nombre_completo }}</h3>
+              <div class="small muted">{{ e.dni }} — {{ e.email }}</div>
+            </div>
+            <div class="actions">
+              <a class="btn btn-ghost" href="/estudiantes/{{ e.id }}">Ver</a>
+              {% if user.es_admin %}
+                <a class="btn btn-ghost" href="/estudiantes/{{ e.id }}/editar">Editar</a>
+                <form method="post" action="/estudiantes/{{ e.id }}/borrar" onsubmit="return confirm('Borrar estudiante?');" style="display:inline">
+                  <button class="btn btn-danger" type="submit">Borrar</button>
+                </form>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
